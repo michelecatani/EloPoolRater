@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{%block content%}
+    <h1>Pools</h1>
+    <div class="content-section">
+        <div class="media-body">
+            <h2 class="account-heading"> {{ current_user.username }}'s Pools </h>
+        </div>
+        <div>
+            {% if current_user.pools %} 
+                {% for pool in current_user.pools %}
+                <div class="media content-section">
+                    <h3>{{ pool.name }}</h3>
+                    <p>Your rating: 1200 TODO</p>
+                    <p>Your ranking: 1/5 TODO</p>
+                    <p><a class="mr-2" href="{{ url_for('pools.leaderboard', poolname=pool.name)}}">Leaderboard TODO</a></p>
+                    <p><a class="mr-2" href="{{ url_for('pools.log_match')}}">Log a match TODO</a></p>
+                    <p><a class="mr-2">Trash Talk TODO</a></p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>You currently aren't in any pools!</p>
+            {% endif %}
+        </div>
+        <div class="media content-section">
+            <form method="POST" action = "">
+                {{  form.hidden_tag() }}
+                <fieldset class="form_group">
+                    <legend class="border_bottom mb-4"> Create Pool</legend>
+                    
+                    <div class = "form-group">
+                        {{  form.poolname.label(class="form=control-label") }}
+                        {% if form.poolname.errors %}
+                            {{form.poolname(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.poolname.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                        {% else %}
+                        {{  form.poolname(class="form-control form-control-lg") }}
+                        {%endif%}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+        <div class="media content-section">
+            <form method="POST" action = "">
+                {{  form1.hidden_tag() }}
+                <fieldset class="form_group">
+                    <legend class="border_bottom mb-4"> Join Pool</legend>
+                    <div class = "form-group">
+                        {{  form1.poolname.label(class="form=control-label") }}
+                        {% if form1.poolname.errors %}
+                            {{form1.poolname(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form1.poolname.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                        {% else %}
+                        {{  form1.poolname(class="form-control form-control-lg") }}
+                        {%endif%}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form1.search(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{%block content%}
+<div class="content-section">
+    {% if current_user.is_authenticated %} 
+    
+        <h1>Time to play!</h1>
+        <p>Navigate to "Pools" in the navbar to find a pool!</p>
+        <p>Create a pool and fill it with you and your competitors.  Each time you face-off, log the result.  The rating system will adjust your rating accordingly and will rank the field.</p>
+    {% else %}
+        <h1> Login to utilize </h1>
+        <p>Login to join and participate in pools!</p>
+        <p>Create a pool and fill it with you and your competitors.  Each time you face-off, log the result.  The rating system will adjust your rating accordingly and will rank the field.</p>
+    {%endif%}
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{%block content%}
+
+    <div class= "content-section">
+        <form method="POST" action = "">
+            {{  form.hidden_tag() }}
+            <fieldset class="form_group">
+                <legend class="border_bottom mb-4"> Log Match</legend>
+                
+                <div class = "form-group">
+                    {{  form.whoYouPlayed.label(class="form=control-label") }}
+                    {% if form.whoYouPlayed.errors %}
+                        {{form.whoYouPlayed(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.whoYouPlayed.errors %}
+                                <span>
+                                    {{ error }}
+                                </span>
+                            {% endfor %}
+                            </div>
+                    {% else %}
+                    {{  form.whoYouPlayed(class="form-control form-control-lg") }}
+                    {%endif%}
+                </div>
+                <div class="form-check">
+                    {{ form.didYouWin(class="form-check-input") }}
+                    {{ form.didYouWin.label(class="form-check-label") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>      
+    </div>
+{% endblock %}
