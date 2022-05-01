@@ -33,7 +33,7 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}', '{self.rating}')"
+        return f"User('{self.username}', '{self.email}', '{self.image_file}'"
 
 class Pool(db.Model):
     __tablename__ = 'pools'
@@ -42,11 +42,13 @@ class Pool(db.Model):
     name = db.Column(db.String(20), nullable=False)
     users = db.relationship('User', secondary='userpools')
 
+    def __repr__(self):
+        return f"Pool: {self.name}"
+
 class UserPool(db.Model):
     __tablename__ = 'userpools'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     pool_id = db.Column(db.Integer, db.ForeignKey('pools.id'))
     rating = db.Column(db.Float)

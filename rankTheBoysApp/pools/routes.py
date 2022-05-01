@@ -16,8 +16,9 @@ def pools():
     form = CreatePoolForm()
     form1 = JoinPoolForm()
     if form.validate_on_submit():
-        pool = Pool(name=form.poolname.data, id=randint(0, 100000))
+        pool = Pool(name=form.poolname.data)
         userpool = UserPool(pool_id = pool.id, user_id=current_user.id, rating=1200)
+        current_user.pools.append(pool)
         db.session.add(userpool)
         db.session.add(pool)
         db.session.commit()
@@ -35,8 +36,9 @@ def pools():
 @login_required
 def leaderboard(poolname):
     page = request.args.get('page', 1, type=int)
-    pool = Pool.query.filter_by(name=poolname)
-    users = pool.members
+    pool = Pool.query.filter_by(name=poolname).first()
+    users = pool.users
+    ##users = db.session.query(User).filter(User.id.in_(db.session.query(UserPool, UserPool.user_id).filter_by(pool_id=pool.id).all()))
     return render_template('leaderboard.html', users=users)
 
 @thePools.route("/pools/logmatch", methods = ['GET', 'POST'])
