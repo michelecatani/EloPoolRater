@@ -1,1 +1,1 @@
-# EloPoolRater
+# eloPoolRater
