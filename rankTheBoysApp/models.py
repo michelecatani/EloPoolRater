@@ -9,6 +9,7 @@ from sqlalchemy.orm import backref
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -57,7 +58,7 @@ class UserPool(db.Model):
     pool = db.relationship(Pool, backref=backref('userpools', cascade="all, delete-orphan"))
 
     def __repr__(self):
-        return f"Pool: {self.name}"
+        return f"UserPool: {self.id}, PoolId: {self.pool_id}, UserID: {self.user_id}"
 
     
 

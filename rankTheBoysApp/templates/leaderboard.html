@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {%block content%}
-    <h1 class="mb-3"> Leaderboard </h1>
-    {% for user in users %}
+    <h1 class="mb-3"> {{pool.name}}'s Leaderboard </h1>
+    {% for user, userpool in users %}
     <div class="content-section">
         <div media-content-section>
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
             <div class="media-body">
                 <div class="article-metadata">
                     <h3> {{user.username}}</h3>
-                    <p> Rating: 1200 <p>
+                    <p> Rating: {{ userpool.rating }} <p>
                 </div>
             </div>
         </div>

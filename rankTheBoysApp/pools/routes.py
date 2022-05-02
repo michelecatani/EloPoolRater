@@ -37,9 +37,9 @@ def pools():
 def leaderboard(poolname):
     page = request.args.get('page', 1, type=int)
     pool = Pool.query.filter_by(name=poolname).first()
-    users = pool.users
-    ##users = db.session.query(User).filter(User.id.in_(db.session.query(UserPool, UserPool.user_id).filter_by(pool_id=pool.id).all()))
-    return render_template('leaderboard.html', users=users)
+    ## why is this not returning proper users???
+    users = db.session.query(User, UserPool).join(UserPool, isouter=True).filter(UserPool.pool_id==pool.id).all()
+    return render_template('leaderboard.html', users=users, pool=pool)
 
 @thePools.route("/pools/logmatch", methods = ['GET', 'POST'])
 @login_required
