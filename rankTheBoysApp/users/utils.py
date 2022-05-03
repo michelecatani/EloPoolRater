@@ -4,7 +4,7 @@ import secrets
 from PIL import Image
 from flask import current_app, url_for
 from rankTheBoysApp import mail, db
-from rankTheBoysApp.models import User
+from rankTheBoysApp.models import User, UserPool
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -31,11 +31,14 @@ If you did not make this request, then simply ignore this email and no changes
 will be made.'''
     mail.send(msg)
 
-def calculateEloAmount(winner: User, loser: User):
-        kFactor = 32
-        winnerExpectedScore = 1 / (1 + pow(10, (loser.rating - winner.rating)/400))
-        loserExpectedScore = 1/ (1 + pow(10, (winner.rating - loser.rating)/400))
+def calculateEloAmount(winnerID, loserID, poolID):
+    winner = db.session.query(UserPool).filter_by(user_id=winnerID).filter_by(pool_id=poolID).first()
+    loser = db.session.query(UserPool).filter_by(user_id=loserID).filter_by(pool_id=poolID).first()
 
-        winner.rating = winner.rating + kFactor*(1 - winnerExpectedScore)
-        loser.rating = loser.rating + kFactor*(0 - loserExpectedScore)
-        db.session.commit()
+    kFactor = 32
+    winnerExpectedScore = 1 / (1 + pow(10, (loser.rating - winner.rating)/400))
+    loserExpectedScore = 1 / (1 + pow(10, (winner.rating - loser.rating)/400))
+
+    winner.rating = winner.rating + kFactor*(1 - winnerExpectedScore)
+    loser.rating = loser.rating + kFactor*(0 - loserExpectedScore)
+    db.session.commit()

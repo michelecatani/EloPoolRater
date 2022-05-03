@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.policy import default
 from rankTheBoysApp import db, login_manager
 from flask_login import UserMixin
 from flask import current_app
@@ -52,13 +53,13 @@ class UserPool(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     pool_id = db.Column(db.Integer, db.ForeignKey('pools.id'))
-    rating = db.Column(db.Float)
+    rating = db.Column(db.Float, nullable = False, default=1200)
 
     user = db.relationship(User, backref=backref('userpools', cascade="all, delete-orphan"))
     pool = db.relationship(Pool, backref=backref('userpools', cascade="all, delete-orphan"))
 
     def __repr__(self):
-        return f"UserPool: {self.id}, PoolId: {self.pool_id}, UserID: {self.user_id}"
+        return f"UserPool: {self.id}, PoolId: {self.pool_id}, UserID: {self.user_id}, rating: {self.rating}"
 
     
 

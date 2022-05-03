@@ -15,16 +15,16 @@ thePools = Blueprint('pools', __name__)
 def pools():
     form = CreatePoolForm()
     form1 = JoinPoolForm()
-    if form.validate_on_submit():
+    if form.submit.data and form.validate():
         pool = Pool(name=form.poolname.data)
-        userpool = UserPool(pool_id = pool.id, user_id=current_user.id, rating=1200)
+        #userpool = UserPool(pool_id = pool.id, user_id=current_user.id, rating=1200)
         current_user.pools.append(pool)
-        db.session.add(userpool)
         db.session.add(pool)
         db.session.commit()
+        db.session
         flash('Your pool has been created!', 'success')
         return redirect(url_for('pools.pools'))
-    if form1.validate_on_submit():
+    if form1.search.data and form1.validate():
         pool = Pool.query.filter_by(name=form1.poolname.data).first()
         current_user.pools.append(pool)
         db.session.commit()
@@ -37,20 +37,20 @@ def pools():
 def leaderboard(poolname):
     page = request.args.get('page', 1, type=int)
     pool = Pool.query.filter_by(name=poolname).first()
-    ## why is this not returning proper users???
-    users = db.session.query(User, UserPool).join(UserPool, isouter=True).filter(UserPool.pool_id==pool.id).all()
+    users = db.session.query(User, UserPool).join(User).filter(UserPool.pool_id==pool.id).order_by(UserPool.rating.desc()).all()
     return render_template('leaderboard.html', users=users, pool=pool)
 
-@thePools.route("/pools/logmatch", methods = ['GET', 'POST'])
+@thePools.route("/pools/logmatch/<string:poolname>", methods = ['GET', 'POST'])
 @login_required
-def log_match():
+def log_match(poolname):
+    pool = Pool.query.filter_by(name=poolname).first()
     form = MatchForm()
     if form.validate_on_submit():
         opponent = User.query.filter_by(username=form.whoYouPlayed.data).first()
-        ##if form.didYouWin:
-            ##calculateEloAmount(current_user, opponent)
-        ##else:
-            ##calculateEloAmount(opponent, current_user)
+        if form.didYouWin.data:
+            calculateEloAmount(current_user.id, opponent.id, pool.id)
+        else:
+            calculateEloAmount(opponent.id, current_user.id, pool.id)
         flash('Match logged and rankings updated!')
         return redirect(url_for('pools.pools'))
     return render_template('match.html', form = form)

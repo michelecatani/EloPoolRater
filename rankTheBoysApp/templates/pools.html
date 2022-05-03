@@ -10,10 +10,10 @@
                 {% for pool in current_user.pools %}
                 <div class="media content-section">
                     <h3>{{ pool.name }}</h3>
-                    <p>Your rating: 1200 TODO</p>
-                    <p>Your ranking: 1/5 TODO</p>
-                    <p><a class="mr-2" href="{{ url_for('pools.leaderboard', poolname=pool.name)}}">Leaderboard TODO</a></p>
-                    <p><a class="mr-2" href="{{ url_for('pools.log_match')}}">Log a match TODO</a></p>
+                    <p>Your rating: 1200 TODO </p>
+                    <p>Your ranking: 1/5 TODO </p>
+                    <p><a class="mr-2" href="{{ url_for('pools.leaderboard', poolname=pool.name)}}">Leaderboard</a></p>
+                    <p><a class="mr-2" href="{{ url_for('pools.log_match', poolname=pool.name)}}">Log a match (Fix, add dropdown)</a></p>
                 </div>
                 {% endfor %}
             {% else %}
